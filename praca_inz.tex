@@ -1,0 +1,1172 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{makecell}
+
+
+\usepackage{float}
+\usepackage{graphicx}
+\graphicspath{{grafiki/}}
+
+\usepackage{pdfpages}
+\usepackage{listings}
+\lstset{
+language=Java,
+breaklines=true,
+showstringspaces=false,
+columns=flexible,
+numbers=none,
+commentstyle=\color{gray},
+stringstyle=\color{purple},
+basicstyle=\footnotesize,
+frame=single
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
+
+\usepackage{chngcntr}
+\usepackage{tabularx}
+
+\usepackage{indentfirst}
+
+\usepackage[margin=2.5cm]{geometry}
+\geometry{lmargin=3cm, rmargin=3cm}
+
+\usepackage{multirow}
+
+\newcommand{\imagewidth}{1.0}
+\newcommand{\screenwidth}{0.7}
+
+
+\linespread{1.3}
+
+\begin{document}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\counterwithin{lstlisting}{section}
+
+\pagenumbering{gobble}
+\pdfminorversion=7
+\includepdf[pages={1}]{title-page/strona_tytulowa.pdf}
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{2}
+\section{Wstęp}
+\subsection{Urządzenia mobilne i system Android}
+
+W ciągu ostatniej dekady urządzenia mobilne zaczęły przodować w statystykach ruchu w Internecie. Na początku roku 2009 niemal cały ruch w sieci inicjowany był przez komputery stacjonarne oraz laptopy, natomiast w roku 2018 smartfony oraz tablety mają już 56\% udziału przy 43\% udziału laptopów i desktopów (pozostały 1\% to inne urządzenia np. konsole) \cite{wasuk}. Trendy pokazują, że udział urządzeń mobilnych będzie stale rósł i to one będą decydować o ruchu sieciowym w najbliższej przyszłości.
+
+Rosnąca popularność urządzeń mobilnych wiąże się z korzystaniem z aplikacji dostępnych na nich. Na rynku mobilnym obecnie mamy zjawisko duopolu, który nigdy nie był do tej pory tak wyraźny. Zdecydowany prym na rynku wiodą urządzenia z systemem Android mające w 2017 roku 85,9\% udziałów, niemalże całą resztę urządzeń obsługuje system iOS (14\% udziałów) \cite{spidersweb}. Nierówną walkę o udziały na rynku mobilnym z wyżej wymienionymi markami przegrały znane firmy takie jak Nokia, Blackberry czy Microsoft. Jak widać Android jest zdecydowanym liderem wśród urządzeń mobilnych, więc aplikacje dedykowane dla tego systemu mają największy popyt.
+
+\subsection{Branża turystyczna}
+
+Branża turystyczna jest jedną z najlepiej rozwijąjących się gałęzi usług. Z biegiem czasu coraz więcej państw otwiera swoje granice, ułatwia podróże, a linie lotnicze raczą klientów coraz lepszymi ofertami. Poszerzenie strefy Schengen w Europie oraz lepsze i tańsze połączenia do krajów egzotycznych, sprawiają że liczba lotów na przestrzeni ostatnich 20 lat wzrosła niemal trzykrotnie \cite{databank}. 
+
+Podróże są nieodłączną częścią współczesnego społeczeństwa. Najlepiej świadczyć o tym może niedawno pobity rekord świata – 29 czerwca 2018 r. jednocześnie na niebie znajdowało się ponad 19 tys. samolotów pasażerskich \cite{flightradar}, natomiast w przeciągu 24 godzin tego samego dnia odnotowano ponad 200 tysięcy lotów\cite{flightradar}, co było jedynym takim przypadkiem w historii lotów pasażerskich.
+
+Jak mówią dane z 2017 roku, głównym celem wyjazdów zagranicznych w Polsce jest turystyka i wypoczynek \cite{msit}. Wyjazdy turystyczne wymagają odpowiedniego przygotowania, zarówno pod względem formalnym (dokumenty podróży, wizy) jak i pod względem turystycznym. Wiele osób nie wie jakie atrakcje czekają je w miejscu docelowym, co niezbędnego powinni ze sobą zabrać i w jakiej ilości. Ważnym elementem układania planu podróży jest również prognoza pogody na czas wyjazdu. Sprawdzanie wszystkich składowych elementów potrzebnych do zorganizowania podróży marzeń, może być zadaniem zbyt czasochłonnym lub problematycznym. Z analizy powyższych danych można wywnioskować, że rozwiązanie korzystające z dominacji Androida na rynku oraz szerzenia się popularności podróży może cieszyć się dużym zainteresowaniem i popytem.
+
+\subsection{Cel i~zakres pracy}
+Celem pracy jest stworzenie aplikacji mobilnej w systemie Android (wersje od 6.0 wzwyż) wspomagającej proces planowania podróży, sprawdzanie prognozy pogody w miejscu docelowym, generowanie na podstawie wybranych aktywności edytowalnych list rzeczy niezbędnych do spakowania oraz priorytetyzowanie produktów na nich, dodawanie i edycja własnych produktów oraz kalkulowanie wagi bagażu na podstawie wygenerowanej listy.
+
+Zakres obejmuje następujące zagadnienia:
+
+\begin{itemize}
+    \item Analizę dostępnych na rynku istniejących rozwiązań z zakresu organizacji i planowania podróży
+    \item Zapoznanie się z narzędziami, które służą do tworzenia oprogramowania na system Android
+		\item Stworzenie i zaprojektowanie lokalnej, relacyjnej bazy danych korzystając z wbudowanej biblioteki SQLite
+		\item Stworzenie aplikacji wspomagającej planowanie podróży na urządzenia z systemem Android
+		\item Wygenerowanie pliku z rozszerzeniem .apk, a następnie instalacja aplikacji na urządzeniu obsługujacym system Android
+		\item Porównanie utworzonej aplikacji z rozwiązaniami dostępnymi na rynku pod kątem wyznaczonych kryteriów, za pomocą ankiety wśród potencjalnych użytkowników
+\end{itemize}
+
+W pracy przyjęto następujące założenia
+\begin{itemize}
+		\item Do stworzenia aplikacji zostało użyte środowisko programistyczne dla Androida opartego na IntelliJ IDEA- Android Studio. Aplikacja zostanie stworzona z wykorzystaniem API Android w wersji 24
+		\item Stworzona aplikacja będzie rozszerzeniem funkcjonalności rozwiązań komercyjnych dostępnych w sklepie Google Play
+		\item Do instalacji oraz uruchomienia stworzonej aplikacji zostały wykorzystane telefony: Xiaomi Redmi Note 4, Huawei P10 oraz Samsung Galaxy A5.
+\end{itemize}
+
+\newpage
+\section{Analiza istniejących rozwiązań} \label{analiza}
+Podróże są popularnym tematem, popularne są również aplikacje wspomagające ich organizacje. Dostępnych jest wiele rozwiązań w postaci organizerów podróży, w mojej analizie chciałem się skupić na najpopularniejszych oraz najbardziej elastycznych. Następnie dokonam porównania funkcji wybranych aplikacji, żeby na koniec móc je zestawić ze swoim rozwiązaniem. Wybranymi przeze mnie aplikacjami są \textit{PackKing} \cite{packking}, \textit{PackPoint travel packing list} \cite{packpoint} oraz \textit {My Luggage Checklist} \cite{mlc}.
+
+\subsection{PackKing} \label{packking}
+
+\textit{PackKing} jest popularną aplikacją mającą ponad 100 tys. pobrań oraz 7 tys. opinii w Sklepie Play \cite{packking}. Jest to aplikacja bardzo rozbudowana, posiada obszerną bazę danych z wyszczególnionymi aktywnościami, pozwala w niemal dowolny sposób manipulować wygenerowaną listą rzeczy do spakowania, która generuje się na podstawie wybranej długości podróż. Posiada funkcję dodawania własnych przedmiotów oraz wyboru pogody w miejscu docelowym, jednak pogodę użytkownik wybiera sam co pozostawia margines błędu. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{packking-main}
+    \hfill
+    \includegraphics[width=0.3\textwidth]{packking-list-creating}
+    \hfill
+    \includegraphics[width=0.3\textwidth]{packking-activities}
+    \caption{Zrzuty ekranu, prezentujące aplikację PackKing. Ekran główny (po lewej), tworzenie listy rzeczy do spakowania (po środku) wybieranie aktywności w miejscu docelowym (po prawej). Źródło: opracowanie własne}
+    \label{fig:packking-screenshots}
+\end{figure}
+
+
+
+\subsection{PackPoint travel packing list} \label{packpoint}
+
+Najpopularniejszą aplikacją, którą będę analizował w mojej pracy jest \textit{PackPoint travel packing list}, z ponad milionem pobrań i 26 tys. opinii w Sklepie Play \cite{packpoint}. Aplikacja poza dobrze wykonanym i intuicyjnym interfejsem, posiada podpięte API od Google Maps oraz API Google Weather, które w połączeniu pokazują nam prognozę pogody w miejscu docelowym naszej podróży. Nie tak rozbudowana możliwość dodawania własnych produktów jak w przypadku \textit{PackKing}, jednak spełnia swoją podstawową rolę. Możliwości edytowania szablonów list nie byłem w stanie sprawdzić, z racji tego że jest to ograniczenie wyłącznie dla wersji premium.
+
+\begin{figure}[H]
+    \centering
+		\includegraphics[width=0.3\textwidth]{packpoint-trip-create}
+    \hfill
+    \includegraphics[width=0.3\textwidth]{packpoint-activities}
+    \hfill
+    \includegraphics[width=0.3\textwidth]{packpoint-packing-list}
+    \caption{Zrzuty ekranu, prezentujące aplikację PackPoint. Ekran tworzenia wycieczki (po lewej), wybieranie aktywności (po środku) wygenerowana lista rzeczy do spakowania(po prawej). Źródło: opracowanie własne}
+    \label{fig:packpoint-screenshots}
+\end{figure}
+
+\subsection{My Luggage Checklist} \label{mlc}
+
+Ostatnim wybranym przeze mnie rozwiązaniem jest aplikacja \textit{My Luggage Checklist}. Jest ona najmniej popularna z tych przeze mnie opisywanych, ponad 10 tys. pobrań i 150 opinii, jednak po przeanalizowaniu reszty dostępnych aplikacji uznałem, że znajduję się ona na trzecim miejscu pod względem liczby pobrań i pozytywnych recenzji \cite{mlc}. Aplikacja nie raczy nas tak schludnym interfejsem jak dwie poprzednie, jest prosta a interfejs wygląda przestarzale, posiada ona jednak parę przydatnych funkcji, takich jak określanie ceny produktów, dodawanie ikon do produktów czy przydatna funkcja synchronizacji z serwisem Dropbox.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{mlc-main}
+    \hfill
+    \includegraphics[width=0.3\textwidth]{mlc-items}
+    \hfill
+    \includegraphics[width=0.3\textwidth]{mlc-menu}
+    \caption{Zrzuty ekranu, prezentujące aplikację My Luggage Checklist. Ekran startowy(po lewej), dostępne przedmioty (po środku) pasek boczny menu(po prawej). Źródło: opracowanie własne}
+    \label{fig:mlc-screenshots}
+\end{figure}
+
+\subsection{Porównanie istniejących rozwiązań}
+
+Na koniec rozdziału dokonam porównania poszczególnych rozwiązań pod względem posiadanych funkcjonalności. Porównanie zawarte zostanie w tabeli \ref{tab:apps-comparision}.
+
+\begin{table}[H]
+    \centering
+    \caption{Porównanie dostępnych funkcji najpopularniejszych aplikacji wspomagających planowanie podróży}
+        \begin{tabularx}{\textwidth}{|l|c|c|c|}
+        \hline
+        \textbf{Funkcjonalność} & \textbf{PackKing} & \textbf{PackPoint} & \textbf{\shortstack {My Luggage\\ Checklist}} \\
+				\hline
+				Generowanie listy rzeczy & & & \\
+				do spakowania na podstawie & dostępne & dostępne & niedostępne \\
+				aktywności w miejscu docelowym & & & \\
+				\hline
+				Możliwość dodawania & & & \\ 
+				własnych przedmiotów & dostępne & dostępne & dostępne \\
+				\hline
+				Możliwość dodawania & & & \\ 
+				własnych aktywności & niedostępne & dostępne & niedostępne \\
+				\hline
+				Możliwość edytowania listy & & & \\ 
+				przedmiotów do spakowania & dostępne & dostępne & dostępne \\
+				\hline 
+				Możliwość tworzenia własnych & & & \\ 
+				szablonów list do pakowania & dostępne & dostępne & niedostępne \\
+				\hline
+				Eksport listy do pliku PDF & dostępne & dostępne & dostępne \\
+				\hline
+				Synchronizacja & & & \\ 
+				z zewnętrznymi serwisami & niedostępne & niedostępne & dostępne \\
+				\hline
+				Możliwość wyboru pogody dla & & & \\ 
+				jakiej użytkownik chce & dostępne & niedostępne & niedostępne \\ 
+				wygenerować listę & & & \\
+				\hline
+				Sprawdzanie prognozy pogody & & & \\ 
+				w miejscu docelowym & niedostępne & dostępne & niedostępne \\
+				\hline
+				Generowanie list pakowania w & & & \\ 
+				zależności od pogody w & niedostępne & dostępne & niedostępne  \\ 
+				miejscu docelowym & & & \\
+				\hline
+				Generowanie list pakowania w & & & \\ 
+				zależności od długości pobytu & dostępne & dostępne & niedostępne \\ 
+				w miejscu docelowym & & & \\
+				\hline
+				Możliwość odhaczania przedmiotów & & & \\  
+				zapakowanych & dostępne & dostępne & dostępne \\
+				\hline
+				Archiwizowanie odbytych podróży & dostępne & dostępne & dostępne \\
+				\hline
+				\end{tabularx}
+    \label{tab:apps-comparision}
+\end{table}
+
+\newpage
+\section{Opis narzędzi, praktyk programistycznych i programów potrzebnych do realizacji projektu}
+
+\subsection{Android Studio}
+
+Android Studio jest zintegrowanym środowiskiem programistycznym, pozwalającym na tworzenie oprogramowania w systemie Android. Oparty jest na środowisku IntelliJ IDEA i korzysta z jego edycji kodu oraz narzędzi programistycznych. Ponadto środowisko wyposażone jest w Android SDK (Software Development Kit, w moim projekcie używany w wersji 24), który pozwala korzystać z takich narzędzi jak: biblioteki, emulator (możliwość sprawdzania działania aplikacji na różnych urządzeniach, bez konieczności posiadania ich fizycznie), debugger, poradniki, rozbudowany edytor tekstu oraz pozwala korzystać z systemu budowy projektów opartym na Gradle \cite{gradle}. Android Studio został wykorzystany do stworzenia aplikacji (Rysunek \ref{fig:android-studio-screenshot}) zgodnie z wcześniej stworzonym projektem.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\imagewidth\textwidth]{android-studio-screenshot}
+    \caption{Zrzut ekranu prezentujący widok projektu aplikacji w~Android Studio. Źródło: opracowanie własne}
+    \label{fig:android-studio-screenshot}
+\end{figure}
+
+\subsubsection{Room Persistance Library} \label{room}
+
+Android Studio wykorzystuje bazę danych SQLite \cite{sqlite}, jednak do wykorzystania w pełni jej możliwości stworzono bibliotekę Room Persistance Library \cite{room}, która jest wykorzystana przy budowie aplikacji. Biblioteka Room dostarcza abstrakcyjnej warstwy nad SQLite, dzięki której progamista nie musi implementować własnych klas w celu używania bazy danych. Dzięki użyciu Room Persistence Library zapytania SQL sprawdzane są pod kątem poprawności w czasie kompilacji, co zmniejsza prawdopodobieństwo wystąpienia złej kwerendy, a w wyniku zastosowania systemu adnotacji, kod jest bardziej czytelny. Ponadto użycie Room Persistence Library sprawia, że użytkownik nie musi implementować klasycznego wzorca projektowego MVC (pol. \textit{Model-Widok-Kontroler}) stosowanego w aplikacjach do Androida. Biblioteka Room podzielona jest na trzy główne komponenty:
+
+\begin{itemize}
+	\item Database (pol. \textit{baza danych}) - zawiera właściciela bazy danych i jest głównym punktem dostępu do połączenia. Komponent ten oznacza się za pomocą adnotacji \texttt{@Database}, a klasa w ten sposób oznaczona powinna spełnić następujące wymagania:
+	\begin{itemize}
+		\item być klasą abstrakcyjną, która rozszerza abstrakcyjną klasę \texttt{RoomDatabase}
+		\item zawierać listę encji powiązanych z bazą danych, przy czym lista encji musi być podana jako argument adnotacji, wraz z wersją, np. \\ \texttt{@Database (entities = } \{ \texttt{example.class} \}, version=1 ) 
+		\item zawierać abstrakcyjną, bezargumentową metodę, która zwraca obiekt klasy, której przypisano adnotację \texttt{@Dao}
+		\item z racji wysokich kosztów pamięciowych instancja bazy danych musi być zaimplementowana używając wzorca projektowego singletonu, co zagwarantuje stworzenie tylko jednej instancji danej klasy oraz zapewni globalny dostęp do stworzonego obiektu
+	\end{itemize}
+	W czasie wykonywania można uzyskać instancję Database, wywołując metodę \texttt{Room.databaseBuilder()} lub \texttt{Room.inMemoryDatabaseBuilder()}.
+	\item Entity (pol. \textit{encja}) - jest analogiczna do tabeli w bazie danych
+	\item DAO (Data Access Object, pol. \textit{obiekt dostępu do danych}) - w nim zawarte są kwerendy, dzięki którym uzyskujemy dostęp do bazy danych
+\end{itemize}
+
+Rysunek \ref{fig:room-architecture} pokazuje powiązania między poszczególnymi komponentami Room Persistence Library.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\imagewidth\textwidth]{room-architecture}
+    \caption{Diagram prezentujący związek między komponentami w biliotece Room. Źródło: \cite{room}}
+    \label{fig:room-architecture}
+\end{figure}
+
+\paragraph{Komponent Database w aplikacji} ~\\
+
+Komponent \textit{Database} w aplikacji został zaimplementowany zgodnie z wymaganiami wymienionymi w rozdziale \ref{room}.
+Klasą odpowiedzialną za bazę danych, jest klasa \texttt{PackAssistantDatabase}. Listing \ref{lst:Database-class-definition} pokazuje spełnienie pierwszego założenia - klasa jest abstrakcyjna oraz rozszerza klasę \texttt{RoomDatabase}. Ponadto na załączonym listingu widać założenie drugie - w liście argumentów adnotacji \texttt{@Database} jest zawarta lista encji bazy danych.
+
+\begin{lstlisting}[caption= Definicja klasy PackAssistantDatabase,label={lst:Database-class-definition}]
+@Database(entities = {
+        ItemDefinition.class,
+        SectionDefinition.class,
+        PackingListDefinition.class,
+        SectionItemDefinition.class,
+        PackingListSectionDefinition.class,
+        ItemInstance.class,
+        SectionInstance.class,
+        PackingListInstance.class,
+        SectionItemInstance.class,
+        PackingListSectionInstance.class}, version = 10, exportSchema = false)
+@TypeConverters({DateTypeConverter.class, ActivityEnumTypeConverter.class, StatusEnumTypeConverter.class, WeatherEnumTypeConverter.class})
+public abstract class PackAssistantDatabase extends RoomDatabase {
+
+
+...
+
+}
+\end{lstlisting}
+
+Listing \ref{lst:Database-class-singleton} zawiera z kolei spełnienie dwóch kolejnych założeń - abstrakcyjne, bezargumentowe metody, które zwracają obiekt typu \texttt{@Dao} oraz zaimplementowanie klasy wg wzorca singletonu.
+
+\begin{lstlisting}[caption= Abstrakcyjne metody oraz użycie wzorca singletonu w klasie PackAssistantDatabase,label={lst:Database-class-singleton}]
+
+public abstract class PackAssistantDatabase extends RoomDatabase {
+
+    private static final String DB_NAME = "pack-assistant-db";
+
+    private static PackAssistantDatabase INSTANCE;
+
+    public abstract ItemDefinitionsDao itemDefinitionsDao();
+
+    public abstract SectionDefinitionsDao sectionDefinitionsDao();
+
+    public abstract PackingListDefinitionsDao packingListDefinitionsDao();
+
+    public abstract SectionItemDefinitionsDao sectionItemDefinitionsDao();
+
+    public abstract PackingListSectionDefinitionsDao packingListSectionDefinitionsDao();
+
+    public abstract PackingListInstancesDao packingListInstancesDao();
+
+    public abstract SectionInstancesDao sectionInstancesDao();
+
+    public abstract ItemInstancesDao itemInstancesDao();
+
+    public abstract PackingListSectionInstancesDao packingListSectionInstancesDao();
+
+    public abstract SectionItemInstancesDao sectionItemInstancesDao();
+
+    public synchronized static PackAssistantDatabase getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = buildDatabase(context);
+        }
+
+        return INSTANCE;
+    }
+
+\end{lstlisting}
+
+Ostatnim istotnym elementem klasy \texttt{PackAssistantDatabase} jest metoda tworząca bazę danych, zgodnie z procedurą opisaną w rozdziale \ref{room}, odbywa się to za pomocą użycia metody \texttt{Room.databaseBuilder()} (Listing \ref{lst:Database-class-build}).
+\begin{lstlisting}[caption= Metoda \textit{buildDatabase} w klasie PackAssistantDatabase,label={lst:Database-class-build}]
+private static PackAssistantDatabase buildDatabase(final Context context) {
+        return Room.databaseBuilder(context, PackAssistantDatabase.class, DB_NAME)
+                .addCallback(new Callback() {
+                    @Override
+                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                        super.onCreate(db);
+                        Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                getInstance(context).itemDefinitionsDao().insertAll(ItemDefinition.populateData());
+                                getInstance(context).sectionDefinitionsDao().insertAll(SectionDefinition.populateData());
+                                getInstance(context).packingListDefinitionsDao().insertAll(PackingListDefinition.populateData());
+                                getInstance(context).sectionItemDefinitionsDao().insertAll(SectionItemDefinition.populateData());
+                            }
+                        });
+                    }
+                })
+                .fallbackToDestructiveMigration()
+                .build();
+    }
+\end{lstlisting}
+
+\paragraph{Komponenty Entity w aplikacji} ~\\
+
+Komponent \textit{Entity} jest używany w Room Persistence Library jako odpowiednik tabeli w bazie danych. W moim programie na komponent ten składa się klasa abstrakcyjna \texttt{BaseEntity} rozszerzana przez klasy odpowiedzialne za listy, przedmioty oraz sekcje do których one są przypisane. Ponadto do tego komponentu można zaliczyć klasy odpowiedzialne za przypisanie przedmiotów do sekcji oraz przypisanie sekcji do list pakowania. Wszystko to widoczne jest na diagramie UML (Rysunek \ref{fig:entities-uml}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\imagewidth\textwidth]{entities-uml}
+    \caption{Diagram UML przedstawiający komponent Entities. Źródło: opracowanie własne w programie StarUML \cite{staruml}}
+    \label{fig:entities-uml}
+\end{figure}
+
+Rekordy do tabel baz danych dodawane są w kodach klas Java. Na listingu \ref{lst:Database-add-item} widać fragment klasy \texttt{ItemDefinition}, której statyczna metoda \textit{populateData()} odpowiedzialna jest za dodawanie przedmiotów do bazy danych.
+
+\begin{lstlisting}[caption= Konstruktor klasy ItemDefinition oraz jej statyczna metoda \textit{populateData()}, label={lst:Database-add-item}]
+    public ItemDefinition(String name, Double maxTemp, Double minTemp, Double weight, WeatherEnum weather, ActivityEnum activity) {
+        this(name, activity, minTemp, maxTemp);
+        this.weather = weather;
+        this.weight = weight;
+    }
+ ...
+public static ItemDefinition[] populateData() {
+        return new ItemDefinition[]{
+                new ItemDefinition("Passport"),
+                new ItemDefinition("Money"),
+                new ItemDefinition("ID Card"),
+                new ItemDefinition("Bike shoes", ActivityEnum.RIDING_A_BIKE),
+                new ItemDefinition("Running shoes", ActivityEnum.JOGGING),
+                new ItemDefinition("Basketball shoes", ActivityEnum.PLAYING_BASKETBALL),
+                new ItemDefinition("Football shoes", ActivityEnum.PLAYING_FOOTBALL),
+                new ItemDefinition("Swimming trunks", ActivityEnum.SWIMMING),
+                new ItemDefinition("Briefcase", ActivityEnum.OTHER, 5.0D, 15.0D),
+                new ItemDefinition("Briefcase 2", ActivityEnum.OTHER, 16.0D, 25.D),
+                new ItemDefinition("Briefcase 3", ActivityEnum.OTHER, 26.0D, 35.0D),
+                new ItemDefinition("Briefcase 4", ActivityEnum.OTHER, 36.0D, 45.0D),
+                new ItemDefinition("Briefcase 5", ActivityEnum.OTHER, -0.6D, 4.0D),
+                new ItemDefinition("For Sunny", ActivityEnum.OTHER, WeatherEnum.SUNNY),
+                new ItemDefinition("For Windy", ActivityEnum.OTHER, WeatherEnum.WINDY),
+                new ItemDefinition("For Snowy", ActivityEnum.OTHER, WeatherEnum.SNOWY),
+                new ItemDefinition("For Stormy", ActivityEnum.OTHER, WeatherEnum.STORMY),
+                new ItemDefinition("For Rainy", ActivityEnum.OTHER, WeatherEnum.RAINY)
+        };
+    }
+\end{lstlisting}
+
+
+\paragraph{Komponenty Data Access Object w aplikacji} ~\\
+
+Komponentami DAO (Data Access Object) w stworzonej aplikacji są interfejsy, w których zawarte są kwerenty napisane w języku SQL (Listing \ref{lst:sample-sql-query}) i to dzięki nim możemy operować na bazie danych.
+
+\begin{lstlisting}[caption= Przykładowa kwerenda SQL z adnotacją \texttt{@Query} użyta w interfejsie oznaczonym adnotacją \texttt{Dao}, label={lst:sample-sql-query}]
+
+@Dao
+public interface SectionDefinitionsDao {
+
+    @Query("SELECT * FROM section_definitions")
+    Flowable<List<SectionDefinition>> getAll();
+...
+}
+\end{lstlisting}
+
+Komponenty DAO umożliwiają również wstawianie i usuwanie rekordów do tabel bazy danych. Poniżej umieszczony listing interfejsu \texttt{ItemDefinitionsDao}, w którym widać wybieranie danych za pomocą kwerendy SELECT, a następnie dodawanie i usuwanie rekordów odpowiednimi metodami, przy użyciu adnotacji \texttt{@Insert} oraz \texttt{@Delete}(Listing \ref{lst:sample-add-delete-query}).
+\begin{lstlisting}[caption= Listing interfejsu ItemDefinitionsDao, label={lst:sample-add-delete-query}]
+@Dao
+public interface ItemDefinitionsDao {
+
+    @Query("SELECT * FROM items_definitions")
+    Flowable<List<ItemDefinition>> getAll();
+
+    @Query("SELECT i.id, i.name, i.max_temp, i.min_temp, i.weather, i.activity, i.weight " +
+            "FROM items_definitions i " +
+            "LEFT JOIN section_item_definitions si ON si.item_id = i.id " +
+            "WHERE si.section_id = :id")
+    List<ItemDefinition> getBySectionId(Long id);
+
+    @Query("SELECT * FROM items_definitions def WHERE def.id = :id")
+    ItemDefinition getById(long id);
+
+    @Insert
+    long[] insertAll(ItemDefinition... itemDefinitions);
+
+    @Query("SELECT i.id, i.name, i.max_temp, i.min_temp, i.weather, i.activity, i.weight " +
+            "FROM items_definitions i " +
+            "WHERE i.name = :name")
+    ItemDefinition getByName(String name);
+
+    @Delete
+    void delete(ItemDefinition... itemDefinition);
+
+}
+\end{lstlisting}
+
+\subsection{StarUML}
+
+StarUML to oprogramowanie pozwalające tworzyć diagramy UML (Unified Modeling Language). Pozwala w łatwy i intuicyjny sposób tworzyć między innymi diagramy: klas, sekwencji, przpadków użycia, stanów itd. StarUML jest programem typu ,,Drag and Drop'', co pozwala na szybkie konstruowanie diagramów (Rysunek \ref{fig:staruml-screenshot}). Wykorzystano program do zaprojektowania całej aplikacji.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\imagewidth\textwidth]{staruml-screenshot}
+    \caption{Zrzut ekranu prezentujący przykładowy diagram klas stworzony w StarUML \cite{staruml}. Źródło: opracowanie własne}
+    \label{fig:staruml-screenshot}
+\end{figure}
+
+\subsection{GIMP}
+
+GIMP (GNU Image Manipulation Program) jest darmowym programem służącym do tworzenia grafiki rozpowszechnionym na licencji GNU GPL. Pozwala na tworzenie prostych grafik czy logotypów. Jest również dobrą alternatywą dla płatnych programów takich jak np. Adobe Photoshop.
+
+Mimo, że większość widoków w aplikacji stworzona została przy wykorzystaniu wbudowanych narzędzi Android Studio, zdecydowałem się stworzyć logotyp oraz ikonę aplikacji w programie GIMP (Rysunek \ref{fig:gimp-screenshot}) .
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\imagewidth\textwidth]{gimp-screenshot}
+    \caption{Zrzut ekranu prezentujący widok programu GIMP. Źródło: opracowanie własne}
+    \label{fig:gimp-screenshot}
+\end{figure}
+
+\newpage
+\section{Opis i realizacja aplikacji}
+
+\subsection{Założenia}
+
+Stworzono aplikację wspomagającą proces organizowania podróży, która umożliwia:
+
+\begin{itemize}
+		\item Sprawdzenie pogody w miejscu docelowym za pomocą Weather API
+		\item Tworzenie, edycja oraz zapis listy rzeczy do spakowania wraz z priorytetyzowaniem przedmiotów najważniejszych
+		\item Tworzenie, edycja oraz zapis szablonów list rzeczy do spakowania, szablony zawierają sekcje do których przypisać można poszczególne przedmioty
+		\item Tworzenie, edycja oraz zapis własnych przedmiotów do spakowania
+		\item Zliczanie wagi netto naszego bagaża (istotne przy lotach pasażerskich)
+\end{itemize}
+
+\subsection{Klasy aktywności}
+
+Wszystkie aktywności, które mają miejsce w aplikacji odbywają się dzięki klasom znajdującym się w pakiecie \texttt{activity}. W pakiecie tym zastosowana została technika \textit{Data binding}, czyli stworzenie mechanizmu synchronizacji między źródłem danych, a ich odbiorcą. Sposób realizacji Data bindingu został przedstawiony za pomocą diagramu UML przedstawiającego klasy aktywności na rysunku \ref{fig:activities-uml}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\imagewidth\textwidth]{activities-uml}
+    \caption{Zrzut ekranu prezentujący diagram UML klas aktywności. Źródło: opracowanie własne}
+    \label{fig:activities-uml}
+\end{figure}
+
+\subsection{Funkcjonalności i interakcje}
+
+\subsubsection{Główny ekran}
+
+Na ekranie głównym znajdują się logo aplikacji oraz 4 interaktywne przyciski. Przycisk \textit{Lists} przenosi nas do ekranu, na którym widzimy dostępne listy(Rysunek \ref{fig:packapp-lists-main}), przycisk \textit{Items} przenosi nas do ekranu przedmiotów(Rysunek \ref{fig:packapp-items-list}), przycisk \textit{Templates} przenosi nas do ekranu szablonów  (Rysunek \ref{fig:packapp-templates-list}), natomiast okrągły przycisk z symbolem plusa, pozwala nam na stworzenie nowej podróży, przenosząc nas do ekranu generowania listy rzeczy do spakowania (Rysunek \ref{fig:packapp-create-list-stepone}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{packapp-home}
+    \caption{Ekran główny aplikacji PackApp. Źródło: opracowanie własne}
+    \label{fig:packapp-home}
+\end{figure}
+\newpage
+Widok ekranu głównego został stworzony w pliku XML - \texttt{activity\_home.xml}, treść tego pliku została zwarta w Listingu \ref{lst:home-layout}.
+
+\begin{lstlisting}[caption=Fragment widoku ekranu głównego aplikacji,label={lst:home-layout}]
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="pl.lodz.p.edu.handlers.ClickHandler" />
+
+        <variable
+            name="itemsHandler"
+            type="pl.lodz.p.edu.handlers.ClickHandler" />
+
+        <variable
+            name="packingListsHandler"
+            type="pl.lodz.p.edu.handlers.ClickHandler" />
+
+        <variable
+            name="templatesHandler"
+            type="pl.lodz.p.edu.handlers.ClickHandler" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.HomeActivity"
+        android:background="@color/text_icons">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/listsButton"
+            android:layout_width="@dimen/home_button_width"
+            android:layout_height="@dimen/home_button_height"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/lists_label"
+            style="@style/RoundedButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            android:onClick="@{() -> packingListsHandler.onClick()}"/>
+
+      (...) 
+			
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="198dp"
+            android:layout_height="320dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/packing_list_logo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+		
+</layout>
+\end{lstlisting}
+
+Na załączonym listingu widać dodawanie przycisku \textit{Lists} (pozostałe przyciski dodawane są analogicznie, zmienia sie tylko ich treść i handler) oraz widoczne jest jak zostało dołączone logo aplikacji.
+Jak widać każdy przycisk ma przypisany unikalny numer identyfikujący, co pozwala później używać referencji do niego. Poza tym przycisk posiada rozmiar, treść, umiejscowienie, ale najważniejszym elementem jest linia \texttt{android:onClick="@{() -> packingListsHandler.onClick()}"}, to dzięki niej wywoływany zostaje handler, a po naciśnięciu przycisku użytkownik jest przenoszony do kolejnego ekranu.
+
+\subsubsection{Ekran list}
+
+Po wybraniu przycisku \textit{Lists} na ekranie głównym aplikacji (Rysunek \ref{fig:packapp-home}) użytkownik zostaje przeniesiony do ekranu, w którym może przejrzeć stworzone przez siebie listy (Rysunek \ref{fig:packapp-lists-main}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-lists-main}
+    \caption{Zrzut ekranu pokazujący listy użytkownika. Źródło: opracowanie własne}
+    \label{fig:packapp-lists-main}
+\end{figure}
+
+Na tym ekranie użytkownik widzi stworzone przez siebie listy w postaci okienek, w których zawarty jest cel podróży, data stworzenia listy oraz jej status. Gdy status listy opisany jest zielonym napisem \textit{Open} oznacza to, że lista jest otwarta i można dalej zaznaczać spakowane produktym natomiast czerwony napis \textit{Closed} oznacza, że lista jest zamknięta i nie można dokonywać już żadnych interakcji. (Rysunek \ref{fig:packapp-list-status}). Przejście ze statusu otwartego na zamknięty odbywa się za pomocą naciśnięcia przycisku \textit{Close} na ekranie listy o statusie otwartym. Wartym odnotowania jest, że w prawym dolnym rogu listy mamy widoczną liczbę, mówiącą ile waży zaznaczona przez nas część przedmiotów, a ile cały bagaż.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-list-open}
+    \hfill
+    \includegraphics[width=0.4\textwidth]{packapp-list-closed}
+    \caption{Zrzuty ekranu, prezentujące listę o statusie \textit{Open} (po lewej), oraz \textit{Closed} (po prawej). Źródło: opracowanie własne}
+    \label{fig:packapp-list-status}
+\end{figure}
+
+
+\subsubsection{Ekran przedmiotów}
+
+Po wybraniu przycisku \textit{Items} na ekranie głównym aplikacji (Rysunek \ref{fig:packapp-home}) użytkownik zostaje przeniesiony do ekranu, w którym może przejrzeć dostępne w bazie danych przedmioty(Rysunek \ref{fig:packapp-items-list}). W kolumnie \textit{Name} widzimy nazwę przedmiotu, w kolumnie \textit{Weight} jego wagę, natomiast kolumna \textit{Activity} mówi nam do jakiego rodzaju aktywności jest przedmiot przypisany, co jest istotne przy tworzeniu listy.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-items-list}
+    \caption{Zrzut ekranu, prezentujący ekran dostępnych w bazie danych przedmiotów. Źródło: opracowanie własne}
+    \label{fig:packapp-items-list}
+\end{figure}
+
+Naciśnięcie okrągłego przycisku z symbolem plusa, pozwoli nam na dodanie nowego przedmiotu (Rozdział \ref{przedmiot}). Aplikacja pobiera dane na temat przedmiotów z klasy \texttt{ItemDefinition} (Listing \ref{lst:Database-add-item}) w pliku \textit{single\_item\_layout.xml}(Listing \ref{lst:single-item-layout}), który jest widokiem pojedynczego przedmiotu, natomiast cała lista przedmiotów, wraz z przyciskiem dodawania przedmiotu zawarta jest w pliku \textit{activity\_items.xml} (Fragment w listingu \ref{lst:items-list-layout}).
+
+\begin{lstlisting}[caption=Fragment widoku pojedynczego elementu na liście przedmiotów (reszta pól wyświetalana jest analogicznie),label={lst:single-item-layout}]
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout">
+
+    <data>
+
+        <variable
+            name="obj"
+            type="pl.lodz.p.edu.database.entity.definitions.ItemDefinition" />
+
+    </data>
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:onClick="@{(v) -> handler.onClick()}"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:id="@+id/single_item_name_label_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="0.30"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/name_label_2"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+	(...)
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Fragment widoku ekranu przedmiotów dostępnych w bazie danych pokazujący wyświetlanie nazwy przedmiotu (reszta pól wyświetalana jest analogicznie), label={lst:items-list-layout}]
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/items_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="@{(v) -> handler.onClick()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_add_white_24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+\end{lstlisting}
+
+
+\subsubsection{Ekran szablonów}
+
+Po wybraniu przycisku \textit{Templates} na ekranie głównym aplikacji (Rysunek \ref{fig:packapp-home}) użytkownik zostaje przeniesiony do ekranu, w którym może zobaczyć stworzone przez siebie szablony(Rysunek \ref{fig:packapp-templates-list}). 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-templates-list}
+    \caption{Zrzut ekranu, prezentujący ekran stworzonych przez użytkownika szablonów. Źródło: opracowanie własne.}
+    \label{fig:packapp-templates-list}
+\end{figure}
+
+Widok ten ogranicza się do pokazania listy dostępnych szablonów oraz analogicznie do poprzednich widoków posiada przycisk w prawym dolnym rogu umożliwiający przejście do ekranu tworzenia szablonu (Rozdział \ref{szablon}).
+
+\subsubsection{Ekran generowania listy rzeczy do spakowania}
+
+Po wybraniu przycisku okrągłego przycisku z symbolem plusa na ekranie głównym aplikacji (Rysunek \ref{fig:packapp-home}) użytkownik zostaje przeniesiony do ekranu, w którym może zacząć planować swoją podróż (Rysunek \ref{fig:packapp-create-list-stepone}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-create-list-stepone}
+    \hfill
+    \includegraphics[width=0.4\textwidth]{packapp-create-list-from-template}
+    \caption{Zrzuty ekranu, prezentujące ekran wpisywania miejsca docelowego (po lewej) i ewentualne generowanie listy poprzez wybór szablonu (po prawej). Źródło: opracowanie własne}
+    \label{fig:packapp-create-list-stepone}
+\end{figure}
+
+Pole tekstowe z wyborem szablonu automatycznie podpowiada nam nazwy szablonów, które użytkownik wcześniej stworzył, implementacja widoku dla takiego zachowania przedstawiona jest w listingu \ref{lst:template-autocomplete} pochodzącym z pliku \\ \textit{fragment\_basic\_data\_packing\_list.xml}.
+
+\begin{lstlisting}[caption=Fragment widoku pokazujący automatyczne wypełnianie pola wyboru szablonu, label={lst:template-autocomplete}]
+        <AutoCompleteTextView
+        android:id="@+id/template_autocomplete_tv"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="invisible"
+        android:hint="@string/choose_template"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        android:text="@={converter.toString(params.template)}"/>
+\end{lstlisting}
+
+Następnym oknem, które pokazuje nam się podczas tworzenia naszej podróży, jest wybór aktywności, na podstawie których aplikacja wygeneruje nam przedmioty niezbędne do spakowania (Rysunek \ref{fig:packapp-choose-activities}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-choose-activities}
+    \caption{Zrzut ekranu, prezentujący możliwość wyboru aktywności. Źródło: opracowanie własne}
+    \label{fig:packapp-choose-activities}
+\end{figure}
+
+Po wybraniu odpowiednich dla naszego wypoczynku aktywności, przechodzimy już do ekranu listy o statusie \texttt{Open} (Rysunek \ref{fig:packapp-list-status}). Warto dodać, że priorytetyzacja elementów na liście, sprawia że nie możemy zmienić jej statusu na \textit{Closed} dopóki nie zaznaczymy przedmiotów obowiązkowych, oznaczonych czerwoną gwiazdką (Rysunek \ref{fig:packapp-priority}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-priority}
+    \caption{Zrzut ekranu, prezentujący brak możliwości zamknięcia listy bez zaznaczenia przedmiotów obowiązkowych. Źródło: opracowanie własne}
+    \label{fig:packapp-priority}
+\end{figure}
+
+Za kontrolę priorytetu zaznaczenia przedmiotów najważniejszych odpowiada klasa \texttt{ClosePackingListHandler}, której najistotniejszy fragment widoczny jest w listingu \ref{lst:close-packing-handler}.
+
+\begin{lstlisting} [caption=Fragment kodu sprawdzającego czy elementy z nadanym priorytetem zostały odznaczone, label={lst:close-packing-handler}]
+public class ClosePackingListHandler extends AbstractPackingListHandler implements ClickHandler {
+
+    public ClosePackingListHandler(CreatedPackingListFragment fragment) {
+        super(fragment);
+    }
+
+    @Override
+    public void onClick() {
+        super.onClick();
+        if (allRequiredItemsChecked()) {
+            final ClosePackingListInstanceTask task = new ClosePackingListInstanceTask(fragment);
+            task.execute(fragment.getPackingList());
+            final FragmentActivity activity = fragment.getActivity();
+            if (activity != null) {
+                activity.finish();
+            }
+        } else {
+            Snackbar.make(fragment.getView(), R.string.required_items_not_checked_error, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean allRequiredItemsChecked() {
+        final PackingList packingList = fragment.getPackingList();
+        for (Section section : packingList.getSections()) {
+            for (Item item : section.getItems()) {
+                if (item.getSectionItemInstance().isRequired() && !item.getInstance().isSelected()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+\end{lstlisting}
+
+\subsubsection{Dodawanie przedmiotu} \label{przedmiot}
+
+Gdy na ekranie dostępnych w bazie danych przedmiotów (Rysunek \ref{fig:packapp-items-list}) naciśniemy okrągły przycisk z symbolem plusa, zostaniemy przeniesieni do ekranu, w którym możemy do bazy danych dodać własny przedmiot (Rysunek \ref{fig:packapp-add-item}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-add-item}
+    \caption{Zrzut ekranu, prezentujący okno dodawania własnego przedmiotu do bazy danych. Źródło: opracowanie własne}
+    \label{fig:packapp-add-item}
+\end{figure}
+
+Plikiem z widokiem tego okna jest plik \textit{dialog\_add\_item.xml}(fragmenty w listingu \ref{lst:add-item}). Okno zawiera pola tekstowe na nazwę oraz automatycznie uzupełniane pola pogody oraz aktywności. Ponadto pola w których możemy określić temperaturę w jakiej nasz przedmiot jest użyteczny oraz checkbox, który pozwala nam określić czy przedmiot zostanie dodany do listy tych obowiązkowych. W listingu \ref{lst:add-item} widzimy w jaki sposób zaimplementowane są okna z automatycznym wypełnianiem, checkbox oraz pole wagi, które posiada również konwerter na typ \textit{Double} (Listing \ref{lst:double-conv}). Z kolei listing \ref{lst:add-item-logic} przedstawia fragment klasy \texttt{ItemsActivity}, która odpowiedzialna jest za logikę dodawania przedmiotu.
+
+\begin{lstlisting} [caption=Fragment kodu widoku okna dodawania przedmiotu, label={lst:add-item}]
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="pl.lodz.p.edu.converters.DoubleConverter" />
+				(...)
+		</data>
+(...)
+<com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="@={DoubleConverter.toString(newItem.weight)}"
+                android:singleLine="true"/>
+(...)
+<AutoCompleteTextView
+            android:id="@+id/weather_autocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/select_weather_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weightInput"
+            android:text="@={WeatherConverter.toString(newItem.weather)}"
+            android:singleLine="true"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/activity_autocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/select_section_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weather_autocomplete"
+            android:text="@={ActivityConverter.toString(newItem.activity)}"
+            android:singleLine="true"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:checked="@={newItem.required}"
+            android:text="@string/required_item_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_autocomplete" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+\end{lstlisting}
+
+\begin{lstlisting} [caption=Listing klasy DoubleConverter realizujące konwersję typu string na double (oraz konwersję na odwrót), label={lst:double-conv}]
+import androidx.databinding.InverseMethod;
+
+public class DoubleConverter {
+
+    private static final String DOT = ".";
+    private static final String COMA = ",";
+    private static final String EMPTY = "";
+
+    @InverseMethod("toDouble")
+    public static String toString(Double value) {
+        return value == null ? EMPTY : value.toString();
+    }
+
+    public static Double toDouble(String value) {
+        return Double.valueOf(value.replace(COMA, DOT));
+    }
+
+}
+\end{lstlisting}
+
+\begin{lstlisting} [caption=Fragment kodu klasy ItemsActivity, label={lst:add-item-logic}]
+public class ItemsActivity extends AbstractActivity<ActivityItemsBinding> {
+
+    private boolean selectionMode = false;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        super.initBinding(R.layout.activity_items);
+        setHeaderTitle(R.string.items_title);
+
+        final Intent intent = getIntent();
+        if (intent != null) {
+            this.selectionMode = intent.getBooleanExtra(ExtrasCodesEnum.SELECTION_MODE.name(), false);
+        }
+
+        this.binding.setHandler(new AddItemClickHandler(this));
+        initItemsRecyclerView();
+    }
+
+    @SuppressWarnings("CheckResult")
+    private void initItemsRecyclerView() {
+        this.binding.itemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        PackAssistantDatabase
+                .getInstance(this)
+                .itemDefinitionsDao()
+                .getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(createItemsObserver());
+    }
+
+    private Consumer<List<ItemDefinition>> createItemsObserver() {
+        return new Consumer<List<ItemDefinition>>() {
+            @Override
+            public void accept(List<ItemDefinition> itemDefinitions) {
+                if (selectionMode) {
+                    binding.itemsRecyclerView.setAdapter(new ViewAdapter<>(createItemSelectedModel(itemDefinitions), R.layout.single_item_selection_layout));
+                } else {
+                    binding.itemsRecyclerView.setAdapter(new ViewAdapter<>(itemDefinitions, R.layout.single_item_layout));
+                }
+            }
+        };
+    }
+
+    private List<SelectedItemDataModel> createItemSelectedModel(List<ItemDefinition> itemDefinitions) {
+        final List<SelectedItemDataModel> result = new ArrayList<>();
+        for (ItemDefinition definition : itemDefinitions) {
+            result.add(new SelectedItemDataModel(definition));
+        }
+        return result;
+    }
+\end{lstlisting}
+
+\subsubsection{Edycja przedmiotu}
+
+Ekran przedmiotów ponadto zawiera możliwość ich edycji. Po kliknięciu na któryś z przedmiotów dostępnych na liście (rysunek \ref{fig:packapp-items-list}), zostajemy przeniesieni do ekranu edycji przedmiotu (rysunek \ref{fig:packapp-item-edit}). Okno to jest bardzo podobne do okna dodawania przedmiotu (rysunek \ref{fig:packapp-add-item}), jednak zamiast przycisku \textit{CREATE} mamy przycisk aktualizujący przedmiot \textit{UPDATE}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-item-edit}
+    \caption{Zrzut ekranu, prezentujący okno edycji przedmiotu z bazy danych. Źródło: opracowanie własne}
+    \label{fig:packapp-item-edit}
+\end{figure}
+
+\subsubsection{Dodawanie szablonu} \label{szablon}
+
+Gdy na ekranie listy stworzonych przez użytkownika szablonów (Rysunek \ref{fig:packapp-templates-list}) naciśniemy okrągły przycisk z symbolem plusa, zostaniemy przeniesieni do ekranu, w którym możemy dodać kolejny szablon do naszej bazy (Rysunek \ref{fig:packapp-add-template}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-add-template}
+    \caption{Zrzut ekranu, prezentujący okno dodawania własnego szablonu do bazy danych. Źródło: opracowanie własne}
+    \label{fig:packapp-add-template}
+\end{figure}
+Logika dodawnia szablonu odbywa się w klasie \texttt{TemplatesActivity}(Listing \ref{lst:add-template-logic}).
+
+\begin{lstlisting} [caption= Dodawanie szablonu w klasie TemplatesActivity, label={lst:add-template-logic}]
+public class TemplatesActivity extends AbstractActivity<ActivityTemplatesBinding> {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        super.initBinding(R.layout.activity_templates);
+        setHeaderTitle(R.string.templates_title);
+
+        binding.setHandler(new ViewTransitionClickHandler(this, AddTemplateActivity.class));
+
+        initTemplatesRecyclerView();
+    }
+
+    private void initTemplatesRecyclerView() {
+        this.binding.templatesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        final Disposable subscription = PackAssistantDatabase
+                .getInstance(this)
+                .packingListDefinitionsDao()
+                .getAll(true)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(createTemplatesObserver());
+    }
+
+    private Consumer<List<PackingListDefinition>> createTemplatesObserver() {
+        return new Consumer<List<PackingListDefinition>>() {
+            @Override
+            public void accept(List<PackingListDefinition> data) {
+                binding.templatesRecyclerView.setAdapter(new ViewAdapter<>(data, R.layout.single_template_layout));
+            }
+        };
+    }
+}
+\end{lstlisting}
+
+Na początku jedynym dostępnym polem tekstowym, jest pole nazwy szablonu. Po wpisaniu nazwy i naciśnięciu przycisku \textit{Add Section}, będziemy mogli dodać sekcję, czyli podział przedmiotów naszego szablonu (np. spodnie i koszulka - sekcja odzież). Pojawi nam się pole tekstowe, w którym możemy wpisać nazwę sekcji (Rysunek \ref{fig:packapp-add-section-to-template}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-add-section-to-template}
+    \caption{Zrzut ekranu, prezentujący okno dodawania sekcji do szablonu. Źródło: opracowanie własne}
+    \label{fig:packapp-add-section-to-template}
+\end{figure}
+
+Następnie do każdej sekcji, możemy dodać przedmioty z naszej bazy danych, klikając przycisk \textit{Add Item}, który poprowadzi nas do bardzo podobnego okna jak na rysunku \ref{fig:packapp-items-list}, jednak okno dodawania przedmiotu do sekcji posiada w prawym górnym rogu przycisk \textit{Add} (Rysunek \ref{fig:packapp-add-items-to-section}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-add-items-to-section}
+    \caption{Zrzut ekranu, prezentujący okno dodawania przedmiotu do sekcji szablonu. Źródło: opracowanie własne}
+    \label{fig:packapp-add-items-to-section}
+\end{figure}
+
+Dodawanie przedmiotu do sekcji odbywa się w klasie \texttt{AddTemplateActivity} za pomocą metody \textit{assignItemsToSection}(Listing \ref{lst:add-item-to-section-logic}).
+
+\begin{lstlisting} [caption=Metoda assignItemsToSection() dodająca przedmiot do sekcji, label={lst:add-item-to-section-logic}]
+private void assignItemsToSection(final Intent data) {
+        List<ItemDefinition> items = (List<ItemDefinition>) data.getSerializableExtra(ExtrasCodesEnum.ITEMS.name());
+        int sectionId = data.getIntExtra(ExtrasCodesEnum.SECTION_ID.name(), -1);
+
+        if (sectionId >= 0 && items != null && items.size() > 0) {
+            TemplateSection section = getSectionById(sectionId);
+            if (section == null) {
+                return;
+            }
+
+            section.getItems().addAll(mapToTemplateSectionItem(items));
+            binding.templateSectionsRecyclerView.setAdapter(new TemplateSectionViewAdapter(template.getSections(), AddTemplateActivity.this));
+            binding.getRoot().invalidate();
+        }
+    }
+\end{lstlisting}
+
+
+
+Następuje powrót do okna dodawania szablonu, w którym możemy jeszcze edytować sekcje oraz przedmioty do niej dodane (Rysunek \ref{fig:packapp-edit-template}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-edit-template}
+    \caption{Zrzut ekranu, prezentujący możliwość edycji szablonu przed zapisem. Źródło: opracowanie własne}
+    \label{fig:packapp-edit-template}
+\end{figure}
+
+Na końcu po naciśnięciu przycisku \textit{Save} następuje zapis naszego szablonu do bazy danych oraz aktualizacja listy szablonów (Rysunek \ref{fig:packapp-update-template-list})
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{packapp-update-template-list}
+    \caption{Zrzut ekranu, prezentujący zaktualizowaną o nową pozycję listę szablonów. Źródło: opracowanie własne}
+    \label{fig:packapp-update-template-list}
+\end{figure}
+
+\begin{lstlisting} [caption=Metoda zapisująca szablony saveTemplate() znajdująca się w klasie AddTemplateActivity, label={lst:save-template}]
+    private void saveTemplate() {
+        final SaveTemplateAsyncTask task = new SaveTemplateAsyncTask(this);
+        task.execute(template);
+        finish();
+    }
+\end{lstlisting}
+
+\newpage
+\section{Podsumowanie}
+
+Celem pracy było zaprojektowanie i implementacja aplikacji wspomagającej organizację podróży na urządzenia z systemem Android, rozszerzając jednocześnie rozwiązania alternatywne, dostępne w Sklepie Google Play. Cel pracy został osiągnięty. Dane aplikacji zapisywane są w pamięci urządzenia, używając relacyjnej bazy danych SQL, za pomocą wbudowanej w system Android biblioteki SQLite. Ponadto rekordy bazy danych możemy sami zmieniać, dodając własnie przedmioty, listy oraz szablony przedmiotów do spakowania. Stworzone rozwiązanie wyróżnia się możliwością dodawania własnych szablonów pakowania, zliczania wagi bagażu co pozwoli uniknąć problemów z limitami na lotniskach oraz bardzo istotna opcja priorytetyzacji przedmiotów na liście, czyli braku możliwości zamknięcia listy, bez odhaczenia pozycji obowiązkowych np. paszportu, pieniędzy czy dowodu osobistego.
+Żeby zweryfikowość pożyteczność stworzonego rozwiązania, postanowiłem porównać je z istniejącymi aplikacjami omówionymi w rozdziale \ref{analiza}. Porównanie zostało dokonane, biorąc pod uwagę następujące kryteria: liczba dostępnych przedmiotów, szybkość tworzenia listy pakowania,  wygląd interfejsu użytkownika, liczba atrybutów przedmiotu, intuicyjność interfejsu użytkownika, zarządzanie szablonami przedmiotów do spakowania, zliczanie wagi bagażu, priorytezacja przedmiotów na liście. Porównanie zostało zrelizowane w formie ankiety, pięciu użytkowników zostało poproszonych o ocenę w skali 0-5 poszczególnego kryterium (maksymalna ocena wynosi 25, przy braku funkcjonalności 0 pkt.), następnie oceny zostały zsumowane i umieszczone w odpowiedniej komórce Tabeli \ref{tab:opinion-table}.
+
+
+\begin{table}[H]
+    \centering
+    \caption{Porównanie stworzonego rozwiązania z dostępnymi w Sklepie Google Play}
+    \begin{tabularx}{\textwidth}{|X|c|c|c|c|}
+        \hline
+        \textbf{Kryterium} & \textbf{PackKing} & \textbf{PackPoint} & \textbf{MLC} & \textbf{PackApp}\\ 
+        \hline
+        \textbf{Liczba dostępnych przedmiotów} & 19 & 22 & 25 & 15 \\
+				\hline
+        \textbf{Liczba atrybutów przedmiotu} & 16 & 5 & 20 & 25 \\
+        \hline
+        \textbf{Szybkość tworzenia \newline listy pakowania} & 18 & 19 & 23 & 21 \\
+        \hline
+        \textbf{Wygląd UI} & 18 & 22 & 5 & 20 \\
+        \hline        
+        \textbf{Intuicyjność UI} & 18 & 19 & 11 & 20 \\
+        \hline        
+        \textbf{Zarządzanie szablonami \newline przedmiotów do spakowania} & 0 & 16 & 0 & 20 \\
+        \hline        
+        \textbf{Zliczanie wagi bagażu} & 0 & 0 & 0 & 20 \\
+				\hline        
+        \textbf{Przeglądanie stworzonych list} & 23 & 17 & 10 & 20 \\
+				\hline        
+        \textbf{Priorytetyzacja przedmiotów \newline na liście} & 0 & 0 & 0 & 20 \\
+				\hline
+        \textbf{Funkcja pogody w \newline miejscu docelowym} & 10 & 25 & 0 & 15 \\
+        \hline        
+    \end{tabularx}
+    \label{tab:opinion-table}
+\end{table}
+
+Celem pracy było stworzenie aplikacji, która rozszerza istniejące rozwiązania o przydatne funkcjonalności i jak wynika z ankiety cel został osiągnięty. Użytkownicy pozytywnie ocenili zaimplementowane przeze mnie funkcjonalności i zgodnie przyznali, że z nimi aplikacja mogłaby konkurować z komercyjnymi rozwiązaniami w Sklepie Google Play. Taki wynik ankiety oznacza prawidłowe zdiagnozowanie problemów istniejących rozwiązań. Aplikacja oferuje unikalne funkcjonalności, jedna posiada wady, które wymagają zminimalizowania.
+
+Największą według użytkowników wadą, jest brak możliwości eksportu listy do pliku PDF lub zewnętrznego serwisu typu DropBox. Użytkownicy uznali również, że baza danych jest zbyt mała, warto byłoby dodać gotowe przedmioty, aktywności oraz szablony. Istotną wadą jest również brak API do obsługiwania lokalizacji, przez co użytkownik musi ręcznie wpisać prawidłową miejscowość docelową, proces wpisywania jest walidowany tylko przez zatwierdzenie nazwy przez użytkownika. Problem ten nie wynika z kłopotów implementacyjnych, ponieważ wdrożenie do programu takiego API jest w Android Studio czynnością prostą, jednak nie było żadnych darmowych rozwiązań, które realizowałyby tę funkcję. Poza tym problem wystąpił również przy API obsługującym prognozę pogody udostępnionym przez Yahoo! \cite{yahoo}, ponieważ prognoza jest znana tylko na najbliższe 9 dni i nie ma możliwości ręcznego wpisania daty okresu, który nas interesuje. Płatne rozwiązania np. te od Google mają takie możliwości i warto byłoby z nich skorzystać. To głównie w tych kategoriach użytkownicy podkreślili przewagę rozwiązań komercyjnych. W celu zminimalizowania wad, aplikację należałoby rozbudować.
+
+Pierwszym elementem ulepszenia mojego rozwiązania będzie zwiększenie bazy danych według sugestii użytkowników, oraz jej typu, czyli wykorzystanie bazy zdalnej, zamiast lokalnej. Wraz z dodanym systemem obsługującym social media, pozwoli to użytkownikom na udostępnianie swoich zaplanowanych podróży, czy szablonów przedmiotów do spakowania, a co za tym idzie popularność aplikacji zwiększy się.
+
+Najmocniejszą z unikalnych funkcjonalności mojej aplikacji jest zliczanie wagi bagażu. Zliczanie wagi polega na dodaniu wagi poszczególnych produktów, można to rozszerzyć o uwzględnienie wagi bagaża i informację jakiej wagi bagaż dopuszcza dany przewoźnik. W aplikacji również zostanie dodane komercyjne API obsługujące lokalizację użytkownika, dzięki takiemu systemowi można rozbudować aplikację o miejsca warte odwiedzenia w danym regionie: restauracje, zabytki, pomniki przyrody itp.
+
+Priorytetyzacja również przypadła ankietowanym do gustu. Polega ona na braku możliwości zamknięcia listy pakowania, bez oznaczenia obowiązkowych produktów takich jak np. paszport lub dowód osobisty. Funkcjonalność tę można rozszerzyć dodając wartość priorytetu dla poszczególnych przedmiotów, co decydowałoby o kolejności pakowania przedmiotów i pozwoliłoby upewnić się, że nie zapominimy niczego istotnego.
+
+\newpage
+\section{Literatura}
+\begingroup
+\renewcommand{\section}[2]{}%
+\begin{thebibliography}{14}
+		\bibitem{databank}
+		World Bank Open Data. Free and open access to global development data. \\
+		\texttt{https://data.worldbank.org/} (dostęp 9.2.2019 r.)
+		\bibitem{flightradar}
+		Flightradar24 Live Air Traffic. \\
+		\texttt{https://www.flightradar24.com/data/
+		statistics} (dostęp 6.2.2019 r.)
+		\bibitem{msit}
+		Ministerstwo Sportu i Turystyki \\
+		\texttt{https://www.msit.gov.pl/pl/turystyka/badania-rynku-turystycz/\\statystyka-komunikaty-i/7855,Charakterystyka-podrozy\\-mieszkancow-Polski-w-2017-r.html} (dostęp 9.2.2019 r.)
+		\bibitem{wasuk}
+		WeAreSocial UK – Digital in 2018: World’s internet users pass the 4 billion mark %
+		\texttt{https://wearesocial.com/uk/blog/2018/01/global-digital-report-2018} \\ (dostęp 9.02.2019 r.)
+		\bibitem{spidersweb}
+		Spider's Web - Android i iOS rządzą. \\
+		\texttt{https://www.spidersweb.pl/2018/02/android-ios-udzialy-rynkowe.html} \\ (dostęp 9.02.2019 r.)
+		\bibitem{packking}
+		Aplikacja wspomagająca planowanie podróży PackKing \\
+		\texttt{https://play.google.com/store/apps/\\details?id=com.adotis.packking\&hl=pl} (dostęp 9.02.2019 r.)
+		\bibitem{packpoint}
+		Aplikacja wspomagająca planowanie podróży PackPoint travel packing list app \\
+		\texttt{https://www.packpnt.com/}
+		\bibitem{mlc}
+		Aplikacja wspomagająca pakowanie walizki My Luggage Checklist \\
+		\texttt{https://play.google.com/store/apps/\\details?id=world.easysolution.myluggagechecklist\&hl=en\_US}
+		\bibitem{gradle}
+		K. Pelgrims, \textit{Gradle for Android. Automate the build process for your Android projects with Gradle}, Packt Publishing, 2015.
+		\bibitem{android}
+		Dokumentacja systemu Android \\
+		\texttt{developer.android.com}
+		\bibitem{sqlite}
+		Dokumentacja biblioteki SQLite \\
+		\texttt{sqlite.org}
+		\bibitem{room}
+		Opis biblioteki Room Persistence Library \\
+		\texttt{https://developer.android.com/training/data-storage/room/\#java}	
+		\bibitem{staruml}
+		Dokumentacja programu StarUML \\
+		\texttt{https://docs.staruml.io/}
+		\bibitem{yahoo}
+		Dokumentacja Yahoo Weather API \\
+		\texttt{https://developer.yahoo.com/weather/}
+\end{thebibliography}
+\endgroup
+
+
+\newpage
+\section{Spis rysunków}
+\begingroup
+\renewcommand{\section}[2]{}%
+\listoffigures
+\endgroup
+
+\newpage
+\section{Spis tabel}
+\begingroup
+\renewcommand{\section}[2]{}%
+\listoftables
+\endgroup
+
+\newpage
+\section{Spis listingów}
+\begingroup
+\renewcommand{\section}[2]{}%
+\lstlistoflistings
+\endgroup
+
+\newpage
+\section{Zawartość płyty CD}
+\begin{itemize}
+	\item Praca dyplomowa w formacie .pdf
+	\item Plik .apk umożliwiający instalację aplikacji
+\end{itemize}
+
+\end{document}
